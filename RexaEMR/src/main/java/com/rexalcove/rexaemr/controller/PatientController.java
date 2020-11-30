@@ -3,6 +3,7 @@ package com.rexalcove.rexaemr.controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -21,24 +22,28 @@ public class PatientController {
 	
 	@ApiOperation(value="전체 환자 조회", notes="모든 환자를 조회합니다.")
 	@GetMapping("/patientList")
-	public String getPatientList() {
+	public String getPatientList(@RequestParam(value="name", required=false) String name) {
 		return null;
 	}
+	
 	@ApiOperation(value="전체 환자 조회", notes="특정 환자를 조회합니다.")
 	@GetMapping("/patient")
 	public String getPatient() {
 		return null;
 	}
+	
 	@ApiOperation(value="환자 삽입", notes="특정 환자를 삽입합니다.")
 	@PostMapping("/insertPatient")
 	public String insertPatient() {
 		return null;
 	}
-	@ApiOperation(value="환자 삭제", notes="환자를 삭제합니다.")
+	
+	@ApiOperation(value="환자 삭제", notes="특정 환자를 삭제합니다.")
 	@DeleteMapping("/deletePatient")
 	public String deletePatient() {
 		return null;
 	}
+	
 	@ApiOperation(value="환자 정보 업데이트", notes="환자 정보를 업데이트합니다.")
 	@PostMapping("/updatePatient")
 	public String updatePatient() {
