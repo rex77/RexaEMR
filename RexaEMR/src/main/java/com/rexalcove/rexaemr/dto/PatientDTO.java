@@ -1,4 +1,4 @@
-package com.rexalcove.rexaemr.dao;
+package com.rexalcove.rexaemr.dto;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PatientDAO {
+public class PatientDTO {
 	private int idx;
 	String name;
 	Date dob;
