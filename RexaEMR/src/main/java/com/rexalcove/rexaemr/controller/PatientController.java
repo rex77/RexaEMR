@@ -1,10 +1,17 @@
 package com.rexalcove.rexaemr.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.rexalcove.rexaemr.dto.PatientDTO;
+import com.rexalcove.rexaemr.service.PatientService;
+import com.rexalcove.rexaemr.util.ResultData;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,17 +25,43 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = {"2. Patient"})
 @RestController
 public class PatientController {
-	
+	@Autowired
+	PatientService patientService;
 	
 	@ApiOperation(value="전체 환자 조회", notes="모든 환자를 조회합니다.")
 	@GetMapping("/patientList")
 	public String getPatientList(@RequestParam(value="name", required=false) String name) {
+		//변수 선언
+		ResultData resultData = new ResultData();
+		List<PatientDTO> patientList = null;
+		//로직 처리
+		try {
+		if(name != null)
+			patientList = patientService.getPatientListWithName(name);
+		else
+			patientList = patientService.getPatientList();
+		} catch(Exception e) {
+			resultData.setHeader("500", "Internal Server Error");
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 	
-	@ApiOperation(value="전체 환자 조회", notes="특정 환자를 조회합니다.")
+	@ApiOperation(value="특정 환자 조회", notes="특정 환자를 조회합니다.")
 	@GetMapping("/patient")
-	public String getPatient() {
+	public String getPatient(@RequestParam(value="idx")int idx) {
+		//변수 선언
+		ResultData resultData = new ResultData();
+		PatientDTO patient = null;
+		//로직 처리
+		try {
+		patient = patientService.getPatient(idx);
+		} catch(Exception e) {
+			resultData.setHeader("500", "Internal Server Error");
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 	

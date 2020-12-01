@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper
+	namespace="com.rexalcove.rexaemr.dao.PatientDAO">
+	<select id="getNameBy" resultType="DoctorDTO">
+		select *
+		from doctor
+		where id=#{id} AND password=#{password}
+	</select>
+	
+</mapper>        
