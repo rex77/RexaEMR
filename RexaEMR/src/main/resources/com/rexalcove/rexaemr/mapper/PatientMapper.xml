@@ -36,7 +36,7 @@
 	</delete>
 	
 	<update id="updatePatient">
-		update from patient
+		update patient
 		set
 		name = #{name},
 		email = #{email},
