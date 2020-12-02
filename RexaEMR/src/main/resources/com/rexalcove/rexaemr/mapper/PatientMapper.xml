@@ -1,10 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd ">
 <mapper
 	namespace="com.rexalcove.rexaemr.dao.PatientDAO">
-	<select id="getNameBy" resultType="DoctorDTO">
+	<select id="selectPatientListWithName" resultType="java.util.HashMap">
+		<![CDATA[
 		select *
-		from doctor
-		where id=#{id} AND password=#{password}
+		from patient
+		where name LIKE CONCAT(#{name},'%')
+		]]>
 	</select>
+	
+	<select id="selectPatientList" resultType="java.util.HashMap">
+		select *
+		from patient
+		order by name asc
+	</select>
+	
+	<select id="selectPatient" resultType="PatientDTO">
+		select *
+		from patient
+		where idx = #{idx}
+	</select>
+	
+	<insert id="insertPatient">
+		insert into patient
+		(name, email, contact, dob, insurance, gender)
+		VALUES
+		(#{name}, #{email}, #{contact}, #{dob}, #{insurance}, #{gender})
+	</insert>
+	
+	<delete id="deletePatient">
+		delete from patient
+		where idx = #{idx}
+	</delete>
+	
+	<update id="updatePatient">
+		update from patient
+		set
+		name = #{name},
+		email = #{email},
+		contact = #{contact},
+		dob = #{dob},
+		insurance = #{insurance},
+		gender = #{gender}
+		where
+		idx = #{idx}
+	</update>
+	
 	
 </mapper>        

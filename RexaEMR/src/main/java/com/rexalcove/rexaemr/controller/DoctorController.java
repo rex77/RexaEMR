@@ -26,7 +26,7 @@ public class DoctorController {
 	 * @see #DoctorService
 	 */
 	@Autowired
-	DoctorService ds;
+	DoctorService doctorService;
 
 	@ApiOperation(value = "의사 아이디 로그인", notes = "의사 아이디로 로그인을 실행합니다.")
 	@PostMapping("/login")
@@ -37,7 +37,7 @@ public class DoctorController {
 		
 		//데이터를 담는 로직 처리 & 헤더 설정
 		try {
-			doctor = ds.login(id, password);
+			doctor = doctorService.login(id, password);
 			resultData.setHeader("200", "ok");
 			
 			if(doctor == null) {
