@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd ">
+        
+<mapper namespace="com.rexalcove.rexaemr.dao.HealthRecordDAO">
+	<select id="selectHealthRecordList" resultType="java.util.HashMap">
+	select *
+		from health_record
+		where patient=#{patient}
+	</select>
+	
+	<select id="selectHealthRecord" resultType="HealthRecordDTO">
+		select *
+		from health_record
+		where idx=#{idx}
+	</select>
+	
+	<insert id="insertHealthRecord">
+		insert into health_record
+		(patient, doctor, vital, problems, symptoms, visit_reasons, medications, note)
+		values
+		(#{patient}, #{doctor}, #{vital}, #{problems}, #{symptoms}, #{visitReasons}, #{medications}, #{note})
+	</insert>
+</mapper>        
