@@ -87,9 +87,10 @@ public class PatientController {
 		ResultData resultData = new ResultData();
 		// 로직 처리
 		try {
-			Date dobd = new SimpleDateFormat("yyyy-mm-dd").parse(dob);
+			Date dobd = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
 			patientService.insertPatient(name, email, contact, dobd, insurance, gender);
 			resultData.setHeader("200", "OK");
+			resultData.setBody(new JSONObject().put("count", "1"));
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
@@ -122,20 +123,20 @@ public class PatientController {
 	public String updatePatient(int idx, String name, String email, String contact, String dob, String insurance,
 			String gender) {
 		// 변수 선언
-				ResultData resultData = new ResultData();
-				// 로직 처리
-				try {
-					Date dobd = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
-					boolean result = patientService.updatePatient(idx, name, email, contact, dobd, insurance, gender);
-					if (result)
-						resultData.setHeader("200", "OK");
-					else
-						resultData.setHeader("404", "Patient Not Found");
-				} catch (Exception e) {
-					resultData.setHeader("500", "Internal Server Error");
-					e.printStackTrace();
-				}
+		ResultData resultData = new ResultData();
+		// 로직 처리
+		try {
+			Date dobd = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+			boolean result = patientService.updatePatient(idx, name, email, contact, dobd, insurance, gender);
+			if (result)
+				resultData.setHeader("200", "OK");
+			else
+				resultData.setHeader("404", "Patient Not Found");
+		} catch (Exception e) {
+			resultData.setHeader("500", "Internal Server Error");
+			e.printStackTrace();
+		}
 
-				return resultData.getResultData().toString();
+		return resultData.getResultData().toString();
 	}
 }

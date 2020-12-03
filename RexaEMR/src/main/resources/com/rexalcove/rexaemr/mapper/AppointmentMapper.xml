@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd ">
+        
+<mapper namespace="com.rexalcove.rexaemr.dao.AppointmentDAO">
+	<select id="selectAppointmentList" resultType="java.util.HashMap">
+		select *
+		from appointment
+		where patient=#{patient} AND DATE(date) BETWEEN CONCAT(#{date} , ' 00:00:00') AND CONCAT(#{date}, ' 23:59:59')
+	</select>
+	
+	<select id="selectAppointment" resultType="AppointmentDTO">
+		select *
+		from appointment
+		where idx=#{idx}
+	</select>
+	
+	<insert id="insertAppointment">
+	insert into appointment
+	(patient, doctor, date, memo)
+	values
+	(#{patient}, #{doctor}, #{date}, #{memo})
+	</insert>
+	
+	<delete id="deleteAppointment">
+	delete from appointment
+	where idx=#{idx}
+	</delete>
+	
+	<update id="updateAppointment">
+	update appointment
+	set
+	doctor=#{doctor},
+	patient=#{patient},
+	memo=#{memo},
+	date=#{date}
+	where idx=#{idx}
+	</update>
+</mapper>        
