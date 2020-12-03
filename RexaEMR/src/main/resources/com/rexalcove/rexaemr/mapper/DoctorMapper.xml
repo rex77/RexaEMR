@@ -8,4 +8,10 @@
 		from doctor
 		where id=#{id} AND password=#{password}
 	</select>
+	
+	<select id="selectDoctor" resultType="DoctorDTO">
+		select *
+		from doctor
+		where idx=#{idx}
+	</select>
 </mapper>        

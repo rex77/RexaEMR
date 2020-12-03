@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rexalcove.rexaemr.dto.AppointmentDTO;
+import com.rexalcove.rexaemr.dto.DoctorDTO;
 import com.rexalcove.rexaemr.dto.PatientDTO;
 import com.rexalcove.rexaemr.service.AppointmentService;
+import com.rexalcove.rexaemr.service.DoctorService;
+import com.rexalcove.rexaemr.service.PatientService;
 import com.rexalcove.rexaemr.util.ResultData;
 
 import io.swagger.annotations.Api;
@@ -32,6 +35,12 @@ public class AppointmentController {
 	@Autowired
 	AppointmentService appointmentService;
 
+	@Autowired
+	PatientService patientService;
+	
+	@Autowired
+	DoctorService doctorService;
+	
 	@ApiOperation(value = "전체 예약 정보 불러오기", notes = "전체 예약 정보를 불러옵니다.")
 	@GetMapping("/appointmentList")
 	public String getAppointmentList(String patient, String date) {
@@ -42,13 +51,13 @@ public class AppointmentController {
 		try {
 			appointmentList = appointmentService.getAppointmentList(patient, date);
 			resultData.setHeader("200", "OK");
+			JSONArray data = new JSONArray(appointmentList);
+			resultData.setBody(data.length(), data);
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
 		}
 
-		JSONArray data = new JSONArray(appointmentList);
-		resultData.setBody(data.length(), data);
 
 		return resultData.getResultData().toString();
 	}
@@ -62,17 +71,21 @@ public class AppointmentController {
 		// 로직 처리
 		try {
 			appointment = appointmentService.getAppointment(idx);
-			resultData.setHeader("200", "OK");
 
-			if (appointment == null) {
-				resultData.setHeader("404", "Given Patient Not Found");
-				appointment = new AppointmentDTO();
+			if (appointment != null) {
+				resultData.setHeader("200", "OK");
+				resultData.setBody(new JSONObject(appointment));
+			} else {
+				PatientDTO patient = patientService.getPatient(idx);
+				if(patient!=null)
+					resultData.setHeader("200", "OK");
+				else
+					resultData.setHeader("404", "Given Patient Not Found");
 			}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
 		}
-		resultData.setBody(new JSONObject(appointment));
 		return resultData.getResultData().toString();
 	}
 
@@ -88,7 +101,17 @@ public class AppointmentController {
 			resultData.setHeader("200", "OK");
 			resultData.setBody(new JSONObject().put("count", "1"));
 		} catch (Exception e) {
+			PatientDTO patientDto = patientService.getPatient(patient);
+			DoctorDTO doctorDto = doctorService.getDoctor(doctor);
+			
+			if(patientDto == null) {
+				resultData.setHeader("404", "Patient Not Found");
+			} else if (doctorDto == null) {
+				resultData.setHeader("405", "Doctor Not Found");
+			} else {
 			resultData.setHeader("500", "Internal Server Error");
+			}
+			resultData.setBody(new JSONObject().put("count", "0"));
 			e.printStackTrace();
 		}
 
@@ -108,11 +131,21 @@ public class AppointmentController {
 				resultData.setHeader("200", "OK");
 				resultData.setBody(new JSONObject().put("count", "1"));
 			} else {
-				resultData.setHeader("404", "Appointment Not Found");
+				resultData.setHeader("404", "Appointment Not Found"); //where 조건 불일치는 예외 아님
 				resultData.setBody(new JSONObject().put("count", "0"));
 			}
 		} catch (Exception e) {
+			PatientDTO patientDto = patientService.getPatient(patient);
+			DoctorDTO doctorDto = doctorService.getDoctor(doctor);
+			
+			if(patientDto == null) { //외부키 조건 불일치는 예외임
+				resultData.setHeader("404", "Patient Not Found");
+			} else if (doctorDto == null) {
+				resultData.setHeader("405", "Doctor Not Found");
+			} else {
 			resultData.setHeader("500", "Internal Server Error");
+			}
+			resultData.setBody(new JSONObject().put("count", "0"));
 			e.printStackTrace();
 		}
 

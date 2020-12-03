@@ -65,17 +65,18 @@ public class PatientController {
 		// 로직 처리
 		try {
 			patient = patientService.getPatient(idx);
-			resultData.setHeader("200", "OK");
 
-			if (patient == null) {
+			if (patient != null) {
+				resultData.setHeader("200", "OK");
+				resultData.setBody(new JSONObject(patient));
+			}
+			else {
 				resultData.setHeader("404", "Given Patient Not Found");
-				patient = new PatientDTO();
 			}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
 		}
-		resultData.setBody(new JSONObject(patient));
 		return resultData.getResultData().toString();
 	}
 
@@ -93,6 +94,7 @@ public class PatientController {
 			resultData.setBody(new JSONObject().put("count", "1"));
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
+			resultData.setBody(new JSONObject().put("count", "0"));
 			e.printStackTrace();
 		}
 
@@ -107,12 +109,17 @@ public class PatientController {
 		// 로직 처리
 		try {
 			boolean result = patientService.deletePatient(idx);
-			if (result)
+			if (result) {
 				resultData.setHeader("200", "OK");
-			else
+				resultData.setBody(new JSONObject().put("count", "1"));
+			}
+			else {
 				resultData.setHeader("204", "Patient Not Found");
+				resultData.setBody(new JSONObject().put("count", "0"));
+			}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
+			resultData.setBody(new JSONObject().put("count", "0"));
 			e.printStackTrace();
 		}
 		return resultData.getResultData().toString();
@@ -128,12 +135,17 @@ public class PatientController {
 		try {
 			Date dobd = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
 			boolean result = patientService.updatePatient(idx, name, email, contact, dobd, insurance, gender);
-			if (result)
+			if (result) {
 				resultData.setHeader("200", "OK");
-			else
+				resultData.setBody(new JSONObject().put("count", "1"));
+			}
+			else {
 				resultData.setHeader("404", "Patient Not Found");
+				resultData.setBody(new JSONObject().put("count", "0"));
+				}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
+			resultData.setBody(new JSONObject().put("count", "0"));
 			e.printStackTrace();
 		}
 

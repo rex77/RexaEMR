@@ -17,4 +17,10 @@ public class DoctorServiceImpl implements DoctorService {
 		return doctorDao.login(id, password);
 	}
 
+	@Override
+	public DoctorDTO getDoctor(int idx) {
+		// TODO Auto-generated method stub
+		return doctorDao.selectDoctor(idx);
+	}
+
 }

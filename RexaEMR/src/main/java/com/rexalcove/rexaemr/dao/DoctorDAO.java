@@ -9,4 +9,6 @@ import com.rexalcove.rexaemr.dto.DoctorDTO;
 @Mapper
 public interface DoctorDAO {
 	public DoctorDTO login(String id, String password);
+	
+	public DoctorDTO selectDoctor(int idx);
 }

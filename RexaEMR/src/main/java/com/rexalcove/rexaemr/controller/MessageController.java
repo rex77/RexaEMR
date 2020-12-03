@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rexalcove.rexaemr.dto.DoctorDTO;
 import com.rexalcove.rexaemr.dto.MessageDTO;
+import com.rexalcove.rexaemr.service.DoctorService;
 import com.rexalcove.rexaemr.service.MessageService;
 import com.rexalcove.rexaemr.util.ResultData;
 
@@ -27,6 +29,9 @@ public class MessageController {
 	@Autowired
 	MessageService messageService;
 
+	@Autowired
+	DoctorService doctorService;
+
 	@GetMapping("/inbox")
 	public String getInbox(int receiver) {
 		// 변수 선언
@@ -35,17 +40,22 @@ public class MessageController {
 		// 로직 처리
 		try {
 			messageList = messageService.getInbox(receiver);
-			resultData.setHeader("200", "OK");
-			if (messageList.size() == 0) {
-				resultData.setHeader("404", "No Message was Found");
+			if (messageList.size() != 0) {
+				resultData.setHeader("200", "OK");
+				JSONArray data = new JSONArray(messageList);
+				resultData.setBody(data.length(), data);
+			} else if (messageList.size() == 0) {
+				resultData.setHeader("200", "OK");
+			} else {
+				DoctorDTO receiverDto = doctorService.getDoctor(receiver);
+				if (receiverDto == null) {
+					resultData.setHeader("404", "Given Receiver Not Found");
+				}
 			}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
 		}
-
-		JSONArray data = new JSONArray(messageList);
-		resultData.setBody(data.length(), data);
 
 		return resultData.getResultData().toString();
 	}
@@ -59,16 +69,21 @@ public class MessageController {
 		try {
 			messageList = messageService.getSent(sender);
 			resultData.setHeader("200", "OK");
-			if (messageList.size() == 0) {
-				resultData.setHeader("404", "No Message was Found");
+			if (messageList.size() != 0) {
+				JSONArray data = new JSONArray(messageList);
+				resultData.setBody(data.length(), data);
+			} else if (messageList.size() == 0) {
+				resultData.setHeader("200", "OK");
+			} else {
+				DoctorDTO receiverDto = doctorService.getDoctor(sender);
+				if (receiverDto == null) {
+					resultData.setHeader("404", "Given Sender Not Found");
+				}
 			}
 		} catch (Exception e) {
 			resultData.setHeader("500", "Internal Server Error");
 			e.printStackTrace();
 		}
-
-		JSONArray data = new JSONArray(messageList);
-		resultData.setBody(data.length(), data);
 
 		return resultData.getResultData().toString();
 	}
