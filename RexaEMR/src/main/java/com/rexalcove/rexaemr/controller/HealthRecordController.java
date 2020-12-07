@@ -20,17 +20,28 @@ import io.swagger.annotations.Api;
  * 건강 기록을 관리하는 컨트롤러
  * 
  * @author Rexa
- * @version 1.0.0 20/11/30
+ * @version 1.0.0 20/12/07
  */
 @Api(tags = { "4. Health Record" })
 @RestController
 public class HealthRecordController {
+	/**
+	 * 건강 레코드를 관리하는 서비스 객체를 주입
+	 */
 	@Autowired
 	HealthRecordService healthRecordService;
 
+	/**
+	 * 일부 메서드에서 사용되는 환자 기록 서비스 객체를 주입
+	 */
 	@Autowired
 	PatientService patientService;
 	
+	/**
+	 * 특정 환자의 전체 건강 레코드를 불러오는 메서드
+	 * @param patient 건강 레코드를 불러올 환자
+	 * @return 특정 환자의 전체 건강 레코드
+	 */
 	@GetMapping("/healthRecordList")
 	public String getHealthRecordList(int patient) {
 		// 변수 선언
@@ -56,6 +67,11 @@ public class HealthRecordController {
 		return resultData.getResultData().toString();
 	}
 
+	/**
+	 * 특정 건강 레코드 정보를 불러오는 메서드
+	 * @param idx 건강 레코드의 고유 번호
+	 * @return 건강 레코드
+	 */
 	@GetMapping("/healthRecord")
 	public String getHealthRecord(int idx) {
 		// 변수 선언
@@ -78,6 +94,19 @@ public class HealthRecordController {
 		return resultData.getResultData().toString();
 	}
 
+	
+	/**
+	 * 건강 레코드를 삽입하는 메서드
+	 * @param doctor 건강 레코드를 작성하는 의사 주체
+	 * @param patient 건강 레코드의 대상이 되는 환자
+	 * @param vital 환자의 바이탈
+	 * @param problems 의사 관점에서의 문제
+	 * @param visitReasons 환자가 기술한 방문이유
+	 * @param medications 처방할 약
+	 * @param symptoms 환자의 증상
+	 * @param note 그 이외의 메모
+	 * @return 삽입된 레코드의 수
+	 */
 	@PostMapping("/insertHealthRecord")
 	public String insertHealthRecord(int doctor, int patient, String vital, String problems, String visitReasons,
 			String medications, String symptoms, String note) {

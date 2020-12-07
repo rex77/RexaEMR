@@ -7,17 +7,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 의사 정보를 저장하는 DAO
- * @author rexa
- *
+ * 의사 정보를 저장하는 DTO
+ * @author Rexa
+ * @version 1.0.0 20/12/07
  */
 @Getter
 @Setter
 @ToString
 public class DoctorDTO {
 	private int idx;
-	String id;
-	String password;
-	String name;
-	String hospital;
+	private String id;
+	private String password;
+	private String name;
+	private String hospital;
 }

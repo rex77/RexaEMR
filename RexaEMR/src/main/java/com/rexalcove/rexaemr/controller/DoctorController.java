@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
  * 의사 정보를 관리하는 컨트롤러
  * 
  * @author Rexa
- * @version 1.0.0 20/11/30
+ * @version 1.0.0 20/12/07
  */
 @Api(tags = { "1. Doctor" })
 @RestController
@@ -28,7 +28,13 @@ public class DoctorController {
 	 */
 	@Autowired
 	DoctorService doctorService;
-
+	
+	/**
+	 * 아이디와 패스워드를 받아 의사 아이디로 로그인을 실행합니다
+	 * @param id 아이디
+	 * @param password 패스워드
+	 * @return 로그인된 의사의 정보
+	 */
 	@ApiOperation(value = "의사 아이디 로그인", notes = "의사 아이디로 로그인을 실행합니다.")
 	@PostMapping("/login")
 	public String doctorLogin(String id, String password) {

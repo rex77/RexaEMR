@@ -19,7 +19,6 @@ import io.swagger.annotations.Api;
 
 /**
  * 메시지를 관리하는 컨트롤러
- * 
  * @author Rexa
  * @version 1.0.0 20/11/30
  */
@@ -32,6 +31,12 @@ public class MessageController {
 	@Autowired
 	DoctorService doctorService;
 
+	
+	/**
+	 * 메시지 수신함에 있는 메시지를 전부 불러오는 메서드
+	 * @param receiver 수신하는 의사
+	 * @return 수신함에 있는 전체 메시지
+	 */
 	@GetMapping("/inbox")
 	public String getInbox(int receiver) {
 		// 변수 선언
@@ -60,6 +65,11 @@ public class MessageController {
 		return resultData.getResultData().toString();
 	}
 
+	/**
+	 * 메시지 수신함에 있는 메시지를 전부 불러오는 메서드
+	 * @param sender 발신하는 의사
+	 * @return 발신함에 있는 전체 메시지
+	 */
 	@GetMapping("/sent")
 	public String getSent(int sender) {
 		// 변수 선언
@@ -88,6 +98,14 @@ public class MessageController {
 		return resultData.getResultData().toString();
 	}
 
+	/**
+	 * 메시지를 보내는 메서드
+	 * @param sender 발신자
+	 * @param receiver 수신자
+	 * @param title 메시지 제목
+	 * @param content 메시지 내용
+	 * @return 발신된 메시지 개수
+	 */
 	@PostMapping("/sendMessage")
 	public String sendMessage(int sender, int receiver, String title, String content) {
 		// 변수 선언

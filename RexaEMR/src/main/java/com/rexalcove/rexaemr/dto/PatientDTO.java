@@ -7,19 +7,19 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 환자 정보를 저장하는 DAO
- * @author rexa
- *
+ * 환자 정보를 저장하는 DTO
+ * @author Rexa
+ * @version 1.0.0 20/12/07
  */
 @Getter
 @Setter
 @ToString
 public class PatientDTO {
 	private int idx;
-	String name;
-	Date dob;
-	String gender;
-	String email;
-	String contact;
-	String insurance;
+	private String name;
+	private Date dob;
+	private String gender;
+	private String email;
+	private String contact;
+	private String insurance;
 }
